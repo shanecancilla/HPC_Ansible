@@ -1,0 +1,12 @@
+---
+- name: Change permissions on alma8-install directory
+  hosts: management
+  become: yes
+
+  tasks:
+    - name: Change directory permissions
+      file:
+        path: /var/www/html/alma8-install
+        mode: '0755'
+        recurse: yes
+
