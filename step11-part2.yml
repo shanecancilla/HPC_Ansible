@@ -1,0 +1,24 @@
+---
+- name: Step 11 - Setup dhcpd.conf file and enable and start dhcpd
+  hosts: management
+  remote_user: root
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: install dhcp-server
+      ansible.builtin.package:
+        name: dhcp-server
+        state: present
+
+    - name: Add this config to dhcpd.conf file - for now, static to nickel cluster
+      template:
+        src: dhcp.j2
+        dest: /etc/dhcp/dhcpfake.conf
+        force: yes
+
+    - name: start and enable dhcpd
+      systemd:
+        name: dhcpd
+        enabled: true
+        state: started
