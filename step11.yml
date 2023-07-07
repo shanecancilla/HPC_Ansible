@@ -14,7 +14,7 @@
     - name: Add this config to dhcpd.conf file - for now, static to nickel cluster
       template:
         src: dhcp.j2
-        dest: /etc/dhcp/dhcpfake.conf
+        dest: /etc/dhcp/dhcpd.conf
         force: yes
 
     - name: start and enable dhcpd
