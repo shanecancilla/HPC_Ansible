@@ -1,0 +1,12 @@
+---
+- name: Step Two 
+  hosts: management
+  become: yes
+  vars_files:
+    - var.yaml
+
+  tasks:
+  - name: write management node hostname in /etc/hostname
+    ansible.builtin.lineinfile:
+      path: /etc/hostname 
+      line: "{{ clustername }}1"
