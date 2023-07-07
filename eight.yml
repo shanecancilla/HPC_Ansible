@@ -1,0 +1,46 @@
+---
+- name: Step Eight
+  hosts: management
+  remote_user: root
+
+  tasks:
+  - name: create /mnt/alma8-install/ and /tftpboot/alma8 directories
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: directory
+    loop:
+      - /mnt/alma8-install
+      - /tftpboot/alma8
+        
+  - name: install wget
+    ansible.builtin.dnf:
+      name: wget
+      state: present
+
+  - name: wget Alma Linux ISO image
+    ansible.builtin.get_url:
+      url: "https://repo.almalinux.org/vault/8.5/isos/x86_64/AlmaLinux-8.5-x86_64-minimal.iso"
+      dest: "~/AlmaLinux-8.5-x86_64-minimal.iso"
+
+  - name: mount Alma Linux ISO image to /mnt/alma8-install/
+    ansible.posix.mount:
+      src: /root/AlmaLinux-8.5-x86_64-minimal.iso
+      path: /mnt/alma8-install/
+      fstype: iso9660
+      opts: loop,ro
+      state: mounted
+
+  - name: copy initrd.img and vmlinux to tftpboot
+    ansible.builtin.copy:
+      src: "/mnt/alma8-install/images/pxeboot/{{ item }}"
+      dest: /tftpboot/alma8/
+      remote_src: true
+    loop:
+      - initrd.img
+      - vmlinuz
+
+  - name: copy Alma Linux ISO contents to /var/www/html/ directory 
+    ansible.builtin.copy:
+      src: /mnt/alma8-install
+      dest: /var/www/html
+      remote_src: true
