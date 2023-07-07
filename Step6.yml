@@ -1,0 +1,96 @@
+# TO-DO: Test - particular concern is the get_url modules; I think by this point the management node should have internet access, if not I don't this using this is an option
+---
+ - name: STEP 6 - Install Packages and RPMs
+   hosts: management
+   remote_user: root
+
+   tasks:
+     - name: Install syslinux, tftp-server, httpd, wget, xinetd, freeimpi, expect, epel-release, make, tar, gcc, curl-devel, net-snmp, rpm-build, freeimpi-devel, rpmdevtools, chrony, rsyslog
+       ansible.builtin.dnf:
+         name: 
+           - syslinux
+           - tftp-server
+           - httpd
+           - wget
+           - dhcp-server    # may already be done by Taylor Step 11
+           - xinetd
+           - freeimpi
+           - expect
+           - epel-release
+             enablerepo: powertools
+           - make
+           - tar
+           - gcc
+           - curl-devel
+           - net-snmp-devel
+           - rpm-build
+           - freeimpi-devel
+           - rpmdevtools
+           - chrony
+           - rsyslog
+         state: present
+
+     - name: Download powerman, conman
+       ansible.builtin.get_url:
+         url:
+           - https://github.com/chaos/powerman/releases/download/2.3.26/powerman-2.3.26.tar.gz
+           - https://github.com/dun/conman/releases/download/conman-0.3.0/conman-0.3.0.tar.xz
+         dest: /root
+
+     - name: Install Networking services - iptables, pdsh, libibverbs, infiniband, perftest, libmlx4, opensm, net-tools, openmpi
+       ansible.builtin.dnf:
+         name:
+           - iptables-services 
+           - pdsh-rcmd-ssh
+           - libibverbs-utils
+           - infiniband-diags
+           - perftest
+           - libmlx4
+           - libibverbs
+           - opensm
+           - net-tools
+           - openmpi
+           - openmpi-devel
+         state: present
+    
+     - name: Install Slurm and Munge dependencies
+       ansible.builtin.dnf:
+         name:
+           - bzip2-devel
+           - perl-ExUtils-MakeMaker
+           - openssl
+           - openssl-devel
+           - pam-devel
+           - readline-devel 
+           - mariadb-server 
+           - mariadb-devel 
+           - python3
+           - libtool 
+           - munge
+           - perl-Switch
+           - munge-devel
+         state: present
+
+      - name: Download slurm
+        ansible.builtin.get_url:
+          url: https://download.schedmd.com/slurm/slurm-22.05.0.tar.bz
+          dest: /root
+
+      - name: Install NFS
+        ansible.builtin.dnf:
+          name:
+            - nfs-utils
+            - libnfs-utils
+          state: present
+ 
+      - name: Install MPI and HPL for Benchmarks
+          ansible.builtin.dnf:
+            name:
+              - mpitests-openmpi
+              - atlas-devel
+            state: present
+ 
+      - name: Download HPL
+          ansible.builtin.get_url:
+            url: http://www.netlib.org/benchmark/hpl/hpl-2.3.tar.gz
+            dest: /root
