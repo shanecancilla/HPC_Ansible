@@ -1,0 +1,41 @@
+---
+- name: Step 5: Create second partition
+  hosts: management
+  remote_user: root
+
+  tasks:
+
+  - name: create primary partition to /dev/sdb
+    community.general.parted:
+      device: /dev/sdb
+      label: gpt
+      part_start: 0%
+      part_end: 100%
+      part_type: primary
+      fs_type: xfs
+      state: present
+
+  - name: create XFS file system on sdb1 partition
+    community.general.filesystem:
+      dev: /dev/sdb1
+      fstype: xfs
+      force: true
+
+  - name: make tftpboot directory
+    file:
+      path: /tftpboot
+      state: directory
+      mode: "0755"
+
+  - name: append specified line into fstab file
+    lineinfile:
+      path: /etc/fstab
+      state: present
+      line: /dev/sdb1           /tftpboot       xfs    defaults        0 0
+      insertafter: EOF
+
+  - name: mount tftpboot
+    mount:
+      path: /tftpboot
+      state: mounted
+
