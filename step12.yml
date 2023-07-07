@@ -1,0 +1,18 @@
+---
+ - name: Step 12 - Enable and Start Xinetd & Create /etc/xinetd.d/tftp file
+   hosts: management
+   remote_user: root
+
+   tasks: 
+     - name: Start and enable xinetd
+        ansible.builtin.systemd:
+          name: xinetd
+          state: started
+          enabled: true
+
+     - name: Modify xinetd.d/tftp
+       ansible.builtin.replace:
+         path: /etc/xinted.d/ftp
+         regexp: 'server = (.*\n.*\n.*)'
+         replace: "server = /usr/sbin/in.tftpd \nserver_args = -s /tftpboot/ -v \ndisable = no"
+
