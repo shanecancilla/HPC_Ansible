@@ -13,6 +13,7 @@
       copy:
         src: /usr/share/syslinux
         dest: /tftpboot/
+        remote_src: yes
 
     - name: Make the /tftpboot/pxelinux.cfg directory
       file:	
