@@ -1,0 +1,31 @@
+---
+- name: Step 17 - Install and configure conman 
+  hosts: management
+  remote_user: root
+  vars_files:
+    - vars.yml
+
+  tasks:
+  - name: unzip tar file #tar -xvf conman-0.3.0.tar.xz 
+    command: tar -xvf conman-0.3.0.tar.xz
+
+  - name: delete tcp_wrappers-devel line in file
+    lineinfile:
+      path: conman-0.3.0/conman.spec
+      state: absent
+      regexp: '^BuildRequires:  tcp_wrappers-devel$'
+
+  - name: recreate tar file
+    command: tar -cvf conman-0.3.0.tar.xz conman-0.3.0/      
+
+  - name: build rpm
+    command: rpmbuild -ta -v conman-0.3.0.tar.xz
+
+  - name: install rpm 
+    command: rpm -ivh --force rpmbuild/RPMS/x86_64/conman-*
+
+  - name: configure conman.conf
+    template: 
+      src: conman.j2
+      dest: /etc/
+      force: yes
