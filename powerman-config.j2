@@ -1,0 +1,10 @@
+include "/etc/powerman/ipmipower.dev"
+
+listen "127.0.0.1:10101"
+
+device  "ipmi0"  "ipmipower"  "/usr/sbin/ipmipower -h  p[2-6] |&"
+
+####nodes for ipmipower make sure to add all valid nodes
+{% for node in groups['compute'] -%}
+node "{{ node[1:] }}" "ipmi0" "p{{ loop.index0 + 2 }}"
+{% endfor %}
