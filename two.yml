@@ -3,7 +3,7 @@
   hosts: management
   become: yes
   vars_files:
-    - var.yaml
+    - step2_var.yml
 
   tasks:
   - name: write management node hostname in /etc/hostname
