@@ -1,0 +1,36 @@
+---
+- name: Setup network interfaces and restart NetworkManager
+  host: management
+  tasks:
+    - name: Configure eno1 file
+      template:
+        src: "./eno1-content.j2"
+        dest: "/etc/sysconfig/network-scripts/ifcfg-eno1"
+    - name: Restart the network
+      command: systemctl restart NetworkManager
+    - name: Bring up eno1
+      command: ifup eno1
+    - name: Verify eno1 being default route
+      command: ip route show
+      register: ip_out
+    - debug: var=ip_out.stdout_lines
+    - name: Enable and Start httpd
+      command: systemctl enable --now httpd
+    - name: Check status of httpd
+      command: systemctl status httpd
+      register: out
+    - debug: var=out.stdout_lines
+    - name: Configure eno2 file
+      template:
+        src: './eno2-content.j2'
+        dest: '/etc/sysconfig/network-scripts/ifcfg-eno2'
+    - name: Bring up eno2
+      command: ifup eno2
+      register: eno2_status
+    - debug: var=eno2_status.stdout_lines
+    - name: Verify and install freeipmi and freeipmi-devel
+      shell: |
+        dnf install -y freeipmi expect
+        dnf --enablerepo=powertools install -y freeipmi-devel
+      register: freeipmi_install
+    - debug: var=package1_out.stdout_lines
