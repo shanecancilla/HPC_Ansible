@@ -1,0 +1,35 @@
+---
+- name: Configure powerman
+  hosts: management
+  tasks:
+  - name: Download, install, and configure powerman.conf
+    shell: |
+      wget https://github.com/chaos/powerman/releases/download/2.3.26/powerman-2.3.26.tar.gz
+      tar -xzvf powerman-2.3.26.tar.gz
+      cd powerman-2.3.26/examples
+      sed -i '/BuildRequires: tcp_wrappers-devel/d' powerman_el72.spec
+      sed -i '/BuildRequires: libgenders-devel/d' powerman_el72.spec
+      sed -i '/--with-genders/d' powerman_el72.spec
+      sed -i '/--with-tcp-wrappers/d' powerman_el72.spec
+      sed -i '/BuildRequires: tcp_wrappers-devel/d' powerman_el72.spec.in
+      sed -i '/BuildRequires: libgenders-devel/d' powerman_el72.spec.in
+      sed -i '/--with-genders/d' powerman_el72.spec.in
+      sed -i '/--with-tcp-wrappers/d' powerman_el72.spec.in
+  - name: recreate tar file & build rpm
+    shell: |
+      cd
+      tar -czvf powerman-2.3.26.tar.gz powerman-2.3.26/
+      rpmbuild -ta -v powerman-2.3.26.tar.gz
+  - name: Install powerman through rpm
+    command: rpm -ivh rpmbuild/RPMS/x86_64/powerman-*
+    register: rpm_powerman_out
+    ignore_errors: true
+  - name: Edit powerman.conf file
+    template:
+      src: './files/management-files/powerman-config.j2'
+      dest: '/etc/powerman/powerman.conf'
+  - name: Enable and start powerman service
+    shell: |
+      systemctl enable --now powerman
+      
+
