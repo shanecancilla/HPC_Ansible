@@ -1,0 +1,6 @@
+---
+- name: Enable and Start httpd
+  hosts: management
+  tasks:
+    - name: Proceed with systemctl
+      command: systemctl enable --now httpd

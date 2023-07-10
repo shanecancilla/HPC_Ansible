@@ -1,0 +1,11 @@
+---
+ - name: Step 18 - Create ssh key for root user on mgmt 
+   hosts: management
+   remote_user: root
+
+   tasks:
+     - name: Generate ssh key for root  
+       community.crypto.openssh_keypair:
+       path: ~/.ssh/id_rsa
+       type: rsa
+       size: 4096
