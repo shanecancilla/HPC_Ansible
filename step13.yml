@@ -1,0 +1,13 @@
+---
+- name: Disable and turn off Firewall
+  hosts: management
+  gather_facts: no
+
+
+
+  tasks:
+    - name: Stop firewall
+      systemd: 
+        name: firewalld
+        state: stopped
+        enabled: no
