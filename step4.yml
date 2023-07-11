@@ -14,6 +14,10 @@
       command: ip route show
       register: ip_out
     - debug: var=ip_out.stdout_lines
+    - name: "Configure eno2:1 file"
+      template:
+        src: "./eno21-content.j2"
+        dest: "/etc/sysconfig/network-scripts/ifcfg-eno2:1"
     - name: Enable and Start httpd
       command: systemctl enable --now httpd
     - name: Check status of httpd
