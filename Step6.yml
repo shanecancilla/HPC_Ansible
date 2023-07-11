@@ -14,27 +14,30 @@
            - wget
            - dhcp-server    # may already be done by Taylor Step 11
            - xinetd
-           - freeimpi
+           - freeipmi
            - expect
-           - epel-release
-             enablerepo: powertools
+           - epel-release     # enablerepo: powertools
            - make
            - tar
            - gcc
            - curl-devel
            - net-snmp-devel
            - rpm-build
-           - freeimpi-devel
+           - freeipmi-devel
            - rpmdevtools
            - chrony
            - rsyslog
          state: present
 
-     - name: Download powerman, conman
+     - name: Download powerman
        ansible.builtin.get_url:
-         url:
-           - https://github.com/chaos/powerman/releases/download/2.3.26/powerman-2.3.26.tar.gz
-           - https://github.com/dun/conman/releases/download/conman-0.3.0/conman-0.3.0.tar.xz
+         url: https://github.com/chaos/powerman/releases/download/2.3.26/powerman-2.3.26.tar.gz
+          # - https://github.com/dun/conman/releases/download/conman-0.3.0/conman-0.3.0.tar.xz
+         dest: /root
+
+     - name: Download conman
+       ansible.builtin.get_url:
+         url: https://github.com/dun/conman/releases/download/conman-0.3.0/conman-0.3.0.tar.xz
          dest: /root
 
      - name: Install Networking services - iptables, pdsh, libibverbs, infiniband, perftest, libmlx4, opensm, net-tools, openmpi
@@ -71,26 +74,26 @@
            - munge-devel
          state: present
 
-      - name: Download slurm
-        ansible.builtin.get_url:
-          url: https://download.schedmd.com/slurm/slurm-22.05.0.tar.bz
-          dest: /root
+     - name: Download slurm
+       ansible.builtin.get_url:
+         url: https://download.schedmd.com/slurm/slurm-22.05.0.tar.bz
+         dest: /root
 
-      - name: Install NFS
-        ansible.builtin.dnf:
-          name:
-            - nfs-utils
-            - libnfs-utils
-          state: present
+     - name: Install NFS
+       ansible.builtin.dnf:
+         name:
+           - nfs-utils
+           - libnfs-utils
+         state: present
  
-      - name: Install MPI and HPL for Benchmarks
-          ansible.builtin.dnf:
-            name:
-              - mpitests-openmpi
-              - atlas-devel
-            state: present
+     - name: Install MPI and HPL for Benchmarks
+       ansible.builtin.dnf:
+         name:
+           - mpitests-openmpi
+           - atlas-devel
+         state: present
  
-      - name: Download HPL
-          ansible.builtin.get_url:
-            url: http://www.netlib.org/benchmark/hpl/hpl-2.3.tar.gz
-            dest: /root
+     - name: Download HPL
+       ansible.builtin.get_url:
+         url: http://www.netlib.org/benchmark/hpl/hpl-2.3.tar.gz
+         dest: /root

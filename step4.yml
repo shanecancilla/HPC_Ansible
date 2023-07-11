@@ -1,6 +1,6 @@
 ---
 - name: Setup network interfaces and restart NetworkManager
-  host: management
+  hosts: management
   tasks:
     - name: Configure eno1 file
       template:
