@@ -12,11 +12,11 @@
            - tftp-server
            - httpd
            - wget
-           - dhcp-server    # may already be done by Taylor Step 11
+           - dhcp-server    
            - xinetd
            - freeipmi
            - expect
-           - epel-release     # enablerepo: powertools
+           - epel-release     
            - make
            - tar
            - gcc
@@ -28,6 +28,12 @@
            - chrony
            - rsyslog
          state: present
+
+     - name: Enable powertools repo
+        ansible.builtin.systemd:
+          name: powertools
+          state: started
+          enabled: true
 
      - name: Download powerman
        ansible.builtin.get_url:
