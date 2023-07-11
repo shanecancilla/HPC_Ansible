@@ -76,7 +76,7 @@
 
      - name: Download slurm
        ansible.builtin.get_url:
-         url: https://download.schedmd.com/slurm/slurm-22.05.0.tar.bz
+         url: https://download.schedmd.com/slurm/slurm-22.05.0.tar.bz2
          dest: /root
 
      - name: Install NFS
