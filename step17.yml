@@ -20,6 +20,7 @@
   
   - name: build rpm
     command: rpmbuild -ta -v conman-0.3.0.tar.xz
+    ignore_errors: true
 
   - name: install rpm 
     command: rpm -ivh --force rpmbuild/RPMS/x86_64/conman-*

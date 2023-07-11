@@ -4,8 +4,8 @@
    remote_user: root
 
    tasks:
-     - name: Generate ssh key for root  
-       community.crypto.openssh_keypair:
+   - name: Generate ssh key for root  
+     community.crypto.openssh_keypair:
        path: ~/.ssh/id_rsa
        type: rsa
        size: 4096
