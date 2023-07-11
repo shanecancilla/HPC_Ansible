@@ -60,7 +60,7 @@
        ansible.builtin.dnf:
          name:
            - bzip2-devel
-           - perl-ExUtils-MakeMaker
+           - perl-ExtUtils-MakeMaker
            - openssl
            - openssl-devel
            - pam-devel
