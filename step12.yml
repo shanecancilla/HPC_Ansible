@@ -5,14 +5,14 @@
 
    tasks: 
      - name: Start and enable xinetd
-        ansible.builtin.systemd:
-          name: xinetd
-          state: started
-          enabled: true
+       ansible.builtin.systemd:
+         name: xinetd
+         state: started
+         enabled: true
 
      - name: Modify xinetd.d/tftp
        ansible.builtin.replace:
-         path: /etc/xinted.d/ftp
+         path: /etc/xinetd.d/tftp
          regexp: 'server = (.*\n.*\n.*)'
          replace: "server = /usr/sbin/in.tftpd \nserver_args = -s /tftpboot/ -v \ndisable = no"
 
