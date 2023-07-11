@@ -16,11 +16,11 @@
       state: present
       number: 1
 
-#  - name: create XFS file system on sdb1 partition
-#    community.general.filesystem:
-#      dev: /dev/sdb1
-#      fstype: xfs
-#      force: true
+  - name: create XFS file system on sdb1 partition
+    community.general.filesystem:
+      dev: /dev/sdb1
+      fstype: xfs
+      force: true
 
   - name: make tftpboot directory
     file:
