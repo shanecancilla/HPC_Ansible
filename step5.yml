@@ -1,5 +1,9 @@
 ---
+<<<<<<< HEAD
 - name: Step 5- Create second partition
+=======
+- name: Step 5 Create second partition
+>>>>>>> 1a5069f7a39a2cc66aeabd96c4bc1963fed76225
   hosts: management
   remote_user: root
 
@@ -39,5 +43,9 @@
     mount:
       path: /tftpboot
       state: mounted
+<<<<<<< HEAD
       src: 
+=======
+      src: /dev/sdb1
+>>>>>>> 1a5069f7a39a2cc66aeabd96c4bc1963fed76225
       fstype: xfs
