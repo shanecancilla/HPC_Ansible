@@ -14,6 +14,6 @@
     - name: Run Template file
       lineinfile:
         dest: /etc/hosts
-        line: "{{ lookup('template', './step_1_write.j2') }}"
+        line: "{{ lookup('template', './step1_write.j2') }}"
         insertafter: EOF
       become: true

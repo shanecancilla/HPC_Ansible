@@ -1,19 +1,4 @@
 ---
 
-- name: Use template file to write to /etc/hosts
-  hosts: management
-  vars_files: step1_vars.yml
-  tasks: 
+ext_net: 192.168.59.30 oxygeni
 
-    - name: Write main node to file.
-      blockinfile:
-        path: /etc/hosts
-        block: |
-          {{ ext_net }}
-
-    - name: Run Template file
-      lineinfile:
-        dest: /etc/hosts
-        line: "{{ lookup('template', './step_1_write.j2') }}"
-        insertafter: EOF
-      become: true

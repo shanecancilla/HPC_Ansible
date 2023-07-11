@@ -1,0 +1,14 @@
+{% set configDict = ({'e': 95, 'p': 96, 'h': 127}) %}
+{% set hostPrefix = groups['management'][0][1:-1] %}
+{% for i in ['e', 'p', 'h'] %}
+{% for j in range(1, 9) %}
+{% if i != 'h' %}
+192.168.{{ configDict[i] }}.{{ j }} {{ i }}{{ hostPrefix }}{{ j }} {{ i }}{{ j }}
+{% else %}
+192.168.{{ configDict[i] }}.{{ j }} {{ hostPrefix }}{{ j }} {{ i }}{{ j }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+
+
+{# Only runs for nodes 1-6. If you want more change the range function in the 4th line #}
