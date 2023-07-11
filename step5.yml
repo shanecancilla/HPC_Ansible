@@ -1,5 +1,5 @@
 ---
-- name: Step 5: Create second partition
+- name: Step 5 Create second partition
   hosts: management
   remote_user: root
 
@@ -14,12 +14,13 @@
       part_type: primary
       fs_type: xfs
       state: present
+      number: 1
 
-  - name: create XFS file system on sdb1 partition
-    community.general.filesystem:
-      dev: /dev/sdb1
-      fstype: xfs
-      force: true
+#  - name: create XFS file system on sdb1 partition
+#    community.general.filesystem:
+#      dev: /dev/sdb1
+#      fstype: xfs
+#      force: true
 
   - name: make tftpboot directory
     file:
@@ -38,4 +39,5 @@
     mount:
       path: /tftpboot
       state: mounted
-
+      src: /dev/sdb1
+      fstype: xfs
