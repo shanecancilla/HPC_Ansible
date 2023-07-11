@@ -1,0 +1,63 @@
+---
+- name: Execute management node playbooks
+  hosts: management
+  gather_facts: true
+
+  tasks:
+    - name: Step 1 - Host file configuration
+      import_playbook: step1.yml
+
+    - name: Step 2 - Hostname file configuration
+      import_playbook: step2.yml
+
+    - name: Step 3 - Edit /etc/resolv.conf
+      import_playbook: step3.yml
+
+    - name: Step 4 - Setup network interface
+      import_playbook: step4.yml
+
+    - name: Step 5 - Create second partition
+      import_playbook: step5.yml
+
+    - name: Step 6 - Download packages
+      import_playbook: step6.yml
+
+    - name: Step 7 - Setup /tftpboot and syslinux
+      import_playbook: step7.yml
+
+    - name: Step 8 - Mount alma linux
+      import_playbook: step8.yml
+
+    - name: Step 9 - Fix Alma8 permissions
+      import_playbook: step9.yml
+
+    - name: Step 10 - Start and enable httpd
+      import_playbook: step10.yml
+
+    - name: Step 11 - Setup dhcpd.conf
+      import_playbook: step11.yml
+
+    - name: Step 12 - Enable and start xinetd
+      import_playbook: step12.yml
+
+    - name: Step 13 - Turn off firewall and disable
+      import_playbook: step13.yml
+
+    - name: Step 14 - Setup kickstart file
+      import_playbook: step14.yml
+
+    - name: Step 15 - Fix selinux permissions
+      import_playbook: step15.yml
+
+    - name: Step 16 - Setup powerman
+      import_playbook: step16.yml
+
+    - name: Step 17 - Setup conman
+      import_playbook: step17.yml
+
+    - name: Step 18 - Create ssh key for root user
+      import_playbook: step18.yml
+
+
+
+
