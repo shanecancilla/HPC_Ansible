@@ -3,7 +3,7 @@
   hosts: management
   remote_user: root
   vars_files:
-    - vars11-17.yml
+    - mgmt_vars.yml
 
   tasks:
     - name: install dhcp-server

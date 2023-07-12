@@ -30,10 +30,9 @@
          state: present
 
      - name: Enable powertools repo
-        ansible.builtin.systemd:
-          name: powertools
-          state: started
-          enabled: true
+       ansible.builtin.dnf:
+         state: present
+         enablerepo: powertools
 
      - name: Download powerman
        ansible.builtin.get_url:

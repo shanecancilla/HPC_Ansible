@@ -1,4 +1,7 @@
+---
 cluster: oxygen
+
+ext_net: 192.168.59.30 oxygeni
 
 dictionary:
   "2": 00:1e:67:6d:2d:b6 

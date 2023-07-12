@@ -1,13 +1,5 @@
 ---
 
-- name: Use template file to write to /etc/hosts
-  hosts: management
-  gather_facts: true
-  vars_files:
-    -  mgmt_vars.yml
-
-  tasks: 
-
     - name: Write main node to file.
       blockinfile:
         path: /etc/hosts

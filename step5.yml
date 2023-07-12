@@ -15,12 +15,14 @@
       fs_type: xfs
       state: present
       number: 1
+    ignore_errors: true
 
   - name: create XFS file system on sdb1 partition
     community.general.filesystem:
       dev: /dev/sdb1
       fstype: xfs
       force: true
+    ignore_errors: true
 
   - name: make tftpboot directory
     file:
