@@ -1,0 +1,63 @@
+---
+- name: "Step 6 for management node"
+  hosts: management
+  become: yes
+
+  tasks:
+  - name: Enable EPEL repository and install pdsh on management node
+    ansible.builtin.dnf:
+      name:
+        - epel-release
+        - pdsh-rcmd-ssh
+
+  - name: Start and enable opensm on management node
+    ansible.builtin.systemd:
+      name: opensm
+      enabled: yes
+      state: started
+
+# second playbook
+- name: "Step 6 for all nodes"
+  hosts: all
+  become: yes
+  vars:
+    last: "{{ inventory_hostname | regex_replace('.*(.)$', '\\1') }}"
+
+  tasks:
+  - name: Install packages for IB on management and compute nodes
+    ansible.builtin.dnf:
+      name:
+        - epel-release
+        - pdsh-rcmd-ssh
+        - libibverbs-utils
+        - infiniband-diags
+        - perftest
+        - libmlx4
+        - libibverbs
+        - opensm
+        - net-tools
+        - openmpi
+        - openmpi-devel
+
+  - name: clear contents of the /etc/sysconfig/network-scripts/ifcfg-ib0 file
+    ansible.builtin.copy:
+      dest: /etc/sysconfig/network-scripts/ifcfg-ib0
+      content: ""
+
+  - name: write contents to /etc/sysconfig/network-scripts/ifcfg-ib0
+    ansible.builtin.blockinfile:
+      path: /etc/sysconfig/network-scripts/ifcfg-ib0
+      block: |
+        TYPE=infiniband
+        DEVICE=ib0
+        BOOTPROTO=static
+        NAME=ib0
+        ONBOOT=yes
+        IPADDR=192.168.127.{{ last }}
+        NETMASK=255.255.255.0
+        CONNECTED_MODE=no
+
+  - name: Turn the IB network device off and then on
+    ansible.builtin.shell: |
+      ifdown ib0
+      ifup ib0
