@@ -1,0 +1,34 @@
+---
+
+- name: Create and Distribute the munge key and enable/start munge.
+  hosts: management 
+  become: yes
+
+
+  tasks: 
+    - name: Enable Munge
+      systemd:
+        name: munge
+        enabled: yes
+
+    - name: Start munge 
+      systemd:
+        name: munge
+        state: started
+
+    - name: Create the /var/log/slurm directory
+      file: 
+        path: ~/foo     #/var/log/slurm
+        state: directory
+        mode: '0755'
+        owner: slurm
+        group: slurm
+        recurse: yes
+
+    - name: scp /etc/passwd, /etc/group, /etc/shadow, and /etc/gshadow to every compute node
+      template:
+        src: step10_template.j2
+        dest: /tmp/command_line.sh
+ 
+    - name: execute the command line to copy the files
+      command: /bin/bash /tmp/command_line.sh
