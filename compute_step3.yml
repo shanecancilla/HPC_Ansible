@@ -1,0 +1,15 @@
+---
+ - name: STEP 6 - Set Up /etc/hosts and /etc/resolv.conf
+   hosts: compute
+   remote_user: root
+
+   tasks:
+     - name: Copy /etc/hosts from mgmt to compute nodes
+       ansible.builtin.copy:
+         src: /etc/hosts
+         dest: /etc
+
+     - name: Copy /etc/resolv.conf from mgmt to compute nodes
+       ansible.builtin.copy:
+         src: /etc/resolv.conf
+         dest: /etc
