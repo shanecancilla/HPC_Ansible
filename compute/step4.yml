@@ -1,0 +1,12 @@
+---
+
+- name: Install PDSH 
+  hosts: management
+  become: yes
+
+  tasks: 
+    - name: Install PDSH package
+      ansible.builtin.dnf:
+        name: 
+          - pdsh
+        state: present
