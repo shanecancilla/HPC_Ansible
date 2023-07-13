@@ -36,3 +36,8 @@
       name: conman
       state: started
       enabled: true
+
+  - name: restart dhcpd
+    systemd:
+      name: dhcpd
+      state: restarted
