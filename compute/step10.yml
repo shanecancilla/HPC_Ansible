@@ -18,7 +18,7 @@
 
     - name: Create the /var/log/slurm directory
       file: 
-        path: ~/foo     #/var/log/slurm
+        path: ~/var/log/slurm
         state: directory
         mode: '0755'
         owner: slurm
