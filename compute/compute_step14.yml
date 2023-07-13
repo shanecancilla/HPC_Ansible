@@ -1,0 +1,20 @@
+---
+- name: Example cron job
+  hosts:
+    - management
+    - compute
+  become: true
+
+  tasks:
+#    - name: Create directory /tmp if does not exist
+#      file:
+#        path: /tmp
+#        state: directory
+
+    - name: Configure uptime cron job
+      cron:
+        name: Update Uptime
+        job: "uptime > /tmp/uptime.txt"
+        hour: 18
+        minute: 0
+

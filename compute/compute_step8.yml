@@ -1,0 +1,26 @@
+---
+- name: Install, start, and enable Chrony
+  hosts: 
+    - management
+    - compute
+  become: true
+  
+  tasks:
+    - name: Install Chrony package
+      ansible.builtin.dnf:
+        name: chrony
+        state: present
+  
+    - name: Enable Chrony service
+      systemd:
+        name: chronyd
+        enabled: yes
+  
+    - name: Start Chrony service
+      systemd:
+        name: chronyd
+        state: started
+  
+    - name: Check Chrony sources
+      command: chronyc sources
+
