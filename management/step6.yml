@@ -1,11 +1,10 @@
-# TO-DO: Test - particular concern is the get_url modules; I think by this point the management node should have internet access, if not I don't this using this is an option
 ---
  - name: STEP 6 - Install Packages and RPMs
    hosts: management
    remote_user: root
 
    tasks:
-     - name: Install syslinux, tftp-server, httpd, wget, xinetd, freeimpi, expect, epel-release, make, tar, gcc, curl-devel, net-snmp, rpm-build, freeimpi-devel, rpmdevtools, chrony, rsyslog
+     - name: Install syslinux, tftp-server, httpd, wget, xinetd, tftp, freeimpi, expect, epel-release, make, tar, gcc, curl-devel, net-snmp, rpm-build, freeimpi-devel, rpmdevtools, chrony, rsyslog
        ansible.builtin.dnf:
          name: 
            - syslinux
@@ -14,6 +13,7 @@
            - wget
            - dhcp-server    
            - xinetd
+           - tftp
            - freeipmi
            - expect
            - epel-release     
@@ -21,7 +21,7 @@
            - tar
            - gcc
            - curl-devel
-           - net-snmp-devel
+          - net-snmp-devel
            - rpm-build
            - freeipmi-devel
            - rpmdevtools
