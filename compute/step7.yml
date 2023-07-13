@@ -1,0 +1,16 @@
+---
+- name: Step7 - Edit /etc/profile.d/mpi.sh
+  hosts: all
+  
+  tasks:
+    - name: Get rid of mpi.sh contents
+      copy: 
+        content: ""
+        dest: /etc/profile.d/mpi.sh
+
+    - name: Edit /etc/profile.d/mpi.sh
+      blockinfile:
+        path: /etc/profile.d/mpi.sh
+        block: |
+          export PATH=/usr/lib64/openmpi/bin:$PATH
+          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
