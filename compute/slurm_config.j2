@@ -1,0 +1,48 @@
+{%set rams = []%}
+{%set vcpus = []%}
+{%set sockets = []%}
+{%set cores = []%}
+{%set host = inventory_hostname[1:-1]%}
+{%set first_node = groups['compute'][0]%}
+{%set last_node = groups['compute'][-1]%}
+{%for i in groups['compute']%}
+{%set rams = rams.append(hostvars[i]['ansible_memtotal_mb'])%}
+{%set vcpus = vcpus.append(hostvars[i]['ansible_processor_vcpus'])%}
+{%set sockets = sockets.append(hostvars[i]['ansible_processor_count'])%}
+{%set cores = cores.append(hostvars[i]['ansible_processor_cores'])%}
+{% endfor%}
+ClusterName={{host}}
+SlurmctldHost={{host}}i
+SlurmctldAddr=e{{host}}i
+MpiDefault=none
+ProctrackType=proctrack/cgroup
+ReturnToService=1
+SlurmctldPidFile=/var/run/slurmctld.pid
+SlurmctldPort=6817
+SlurmdPidFile=/var/run/slurmd.pid
+SlurmdPort=6818
+SlurmdSpoolDir=/var/spool/slurmd
+SlurmUser=slurm
+StateSaveLocation=/var/spool/slurm
+SwitchType=switch/none
+TaskPlugin=task/affinity
+InactiveLimit=0
+KillWait=30
+MinJobAge=300
+SlurmctldTimeout=120
+SlurmdTimeout=300
+Waittime=0
+SchedulerType=sched/backfill
+SelectType=select/cons_tres
+SelectTypeParameters=CR_Core
+AccountingStorageType=accounting_storage/none
+JobCompType=jobcomp/none
+JobAcctGatherFrequency=30
+JobAcctGatherType=jobacct_gather/none
+SlurmctldDebug=info
+SlurmctldLogFile=/var/log/slurmctld.log
+SlurmdDebug=info
+SlurmdLogFile=/var/log/slurmd.log
+NodeName={{host}}[{{first_node[-1]}}-{{last_node[-1]}}] NodeAddr=e{{host}}[{{first_node[-1]}}-{{last_node[-1]}}] CPUs={{vcpus | min}} RealMemory={{rams | min | round}} Sockets={{sockets|min}} CoresPerSocket={{cores | min}} ThreadsPerCore=2 State=UNKNOWN
+ 
+PartitionName=debug Nodes=ALL Default=YES MaxTime=INFINITE State=UP

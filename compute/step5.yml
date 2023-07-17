@@ -1,0 +1,20 @@
+---
+- name: Install all RPMs
+  hosts: compute
+  tasks:
+    - name: Install pykickstart
+      command: dnf install -y pykickstart
+    - name: Enable EPEL repository
+      command: dnf install -y epel-release
+    - name: Install Infiniband packages
+      command: dnf install -y libibverbs-utils infiniband-diags perftest libmlx4 libibverbs opensm
+    - name: Install network tools
+      command: dnf install -y net-tools
+    - name: Install OpenMPI packages
+      command: dnf install -y openmpi openmpi-devel
+    - name: Install freeipmi
+      shell: |
+        dnf install -y freeipmi expect
+        dnf --enablerepo=powertools install freeipmi-devel
+    - name: Install RPM tools
+      command: dnf install -y rpmdevtools

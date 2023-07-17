@@ -1,0 +1,17 @@
+---
+- name: Slurm configuration
+  hosts: management
+  gather_facts: true
+  vars:
+    - lowest_mem: []
+  tasks:
+    - name: test 1
+      setup:
+      delegate_to: "{{ item }}"
+      delegate_facts: true
+      with_items: "{{groups['compute']}}"
+    - name: templating
+      template:
+        src: 'slurm_config.j2'
+        dest: '~/dummy-slurm-config.txt'
+      
