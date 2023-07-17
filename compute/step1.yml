@@ -12,9 +12,14 @@
         state: present
         update_password: on_create
         password: "{{ password | password_hash('sha512') }}"
+        home: /home/{{ username }}
+      tags:
+        - create
 
-#    - name: Generate ssh key for user
- #     user:
-  #      name: "{{ username }}"
-   #     generate_ssh_key: yes
-    #    ssh_key_bits: 4096
+    - name: Generate ssh key for user
+      user:
+        name: "{{ username }}"
+        generate_ssh_key: yes
+        ssh_key_bits: 4096
+      tags:
+        - ssh
