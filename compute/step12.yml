@@ -1,0 +1,74 @@
+---
+- name: "Step 12 for all nodes"
+  hosts: all
+  become: yes
+  
+  tasks:
+  - name: Install epel-release, nfs-utils, and libnfs-utils
+    ansible.builtin.dnf:
+      name:
+        - epel-release
+        - nfs-utils
+        - libnfs-utils
+      state: present
+
+- name: "Step 12 for management node"
+  hosts: management
+  become: yes
+
+  tasks:
+  - name: Start and enable NFS server on management node
+    ansible.builtin.systemd:
+      name: nfs-server
+      enabled: yes
+      state: started
+
+  - name: Edit /etc/exports and add one line
+    ansible.builtin.lineinfile:
+      path: /etc/exports
+      line: /home        192.168.95.0/255.255.255.0(rw,sync,no_root_squash)
+      insertafter: EOF
+
+  - name: Restart NFS server
+    ansible.builtin.systemd:
+      name: nfs-server
+      state: restarted
+
+- name: "Step 12 for compute nodes"
+  hosts: compute
+  become: yes
+  vars_files: 
+    - compute_vars.yml 
+
+
+  tasks:
+  - name: Unmount /home
+    ansible.posix.mount:
+      path: /home
+      state: unmounted
+
+  - name: Edit /etc/fstab
+    ansible.builtin.lineinfile:
+      path: /etc/fstab
+      line: "e{{ cluster }}1:/home  /home    nfs    defaults    0 0"
+      insertafter: EOF
+
+  - name: Mount /home
+    ansible.posix.mount:
+      path: /home
+      src: "e{{ cluster }}1:/home"
+      fstype: nfs
+      state: mounted
+
+- name: "Fix SSH issues on all nodes"
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Set SELinux boolean for NFS hoome directories
+    ansible.builtin.command: setsebool -P use_nfs_home_dirs 1
+
+  - name: Restart sshd
+    ansible.builtin.systemd:
+      name: sshd
+      state: restarted
