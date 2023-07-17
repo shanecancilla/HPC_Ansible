@@ -5,13 +5,25 @@
   vars:
     - lowest_mem: []
   tasks:
-    - name: test 1
+    - name: Gathering facts from compute nodes
       setup:
       delegate_to: "{{ item }}"
       delegate_facts: true
       with_items: "{{groups['compute']}}"
-    - name: templating
+    - name: Configuring Slurm
       template:
         src: 'slurm_config.j2'
         dest: '~/dummy-slurm-config.txt'
-      
+    - name: Copy cgroup.conf
+      command: cp /etc/slurm/cgroup.conf.example /etc/slurm/cgroup.conf
+    - name: Change ownership to Slurm
+      command: chown slurm:slurm /var/spool/slurm
+    - name: Start slurmctld in background
+      command: systemctl start slurmctld
+      async: 45
+      poll: 2
+    - name: Copy slurm.conf from MGNT to CMPT
+      command: scp /etc/slurm/slurm.conf {{item}}:/etc/slurm
+      with_items: groups['compute']
+    - name: Start slurmd on compute nodes
+      command: ssh root@{{item}} "systemctl start slurmd && systemctl enable slurmd"
