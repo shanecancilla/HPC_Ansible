@@ -6,6 +6,10 @@
 
 
   tasks: 
+    
+    - name: create munge key # This might prompt confimation if munge is already on it.
+      command: /usr/sbin/create-munge-key
+
     - name: Enable Munge
       systemd:
         name: munge
@@ -28,7 +32,7 @@
     - name: scp /etc/passwd, /etc/group, /etc/shadow, and /etc/gshadow to every compute node
       template:
         src: step10_template.j2
-        dest: /tmp/command_line.sh
+        dest: /tmp/command_line.sh #This module writes each command line to this file and then is executed after
  
-    - name: execute the command line to copy the files
+    - name: execute the command line to copy the files over
       command: /bin/bash /tmp/command_line.sh
