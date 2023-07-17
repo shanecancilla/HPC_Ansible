@@ -1,0 +1,20 @@
+---
+- name: Step 1 - Add user accounts (sudo)
+  hosts: all
+  become: yes
+  vars_files:
+    - compute_vars.yml
+
+  tasks:
+    - name: Create user and password on all nodes and generate ssh key
+      user:
+        name: "{{ username }}"
+        state: present
+        update_password: on_create
+        password: "{{ password | password_hash('sha512') }}"
+
+#    - name: Generate ssh key for user
+ #     user:
+  #      name: "{{ username }}"
+   #     generate_ssh_key: yes
+    #    ssh_key_bits: 4096
