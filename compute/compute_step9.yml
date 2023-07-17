@@ -1,0 +1,36 @@
+---
+ - name: Step 9 - Add Slurm to Local Repo and Install Slurm
+   hosts: compute
+   remote_user: root
+
+   tasks:
+#   - name: Slurm rpmbuild
+#     command: rpmbuild -ta slurm-22.05.0.tar.bz2
+
+ #  - name: Slurm rpm
+ #    command: rpm -ivh rpmbuild/RPMS/x86_64/slurm-*
+
+   - name: Add Slurm as user to /sbin/nologin
+     ansible.builtin.user:
+       name: slurm
+       state: present
+       system: true
+       shell: /sbin/nologin
+
+   - name: Create slurm directory
+     ansible.builtin.file:
+       path: /var/spool/slurm
+       state: directory
+       mode: '0755'
+
+   - name: Copy example conf to new conf file
+     ansible.builtin.copy: 
+       content: /etc/slurm/cgroup.conf.example
+       dest: /etc/slurm.cgroup.conf
+
+   - name: Change slurm ownership
+     ansible.builtin.file:
+       path: /var/spool/slurm
+       owner: slurm
+       group: slurm 
+       mode: 755 
