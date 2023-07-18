@@ -21,7 +21,7 @@
            - tar
            - gcc
            - curl-devel
-          - net-snmp-devel
+           - net-snmp-devel
            - rpm-build
            - freeipmi-devel
            - rpmdevtools
@@ -30,14 +30,11 @@
          state: present
 
      - name: Enable powertools repo
-       ansible.builtin.dnf:
-         state: present
-         enablerepo: powertools
+       command: dnf config-manager --set-enabled powertools
 
      - name: Download powerman
        ansible.builtin.get_url:
          url: https://github.com/chaos/powerman/releases/download/2.3.26/powerman-2.3.26.tar.gz
-          # - https://github.com/dun/conman/releases/download/conman-0.3.0/conman-0.3.0.tar.xz
          dest: /root
 
      - name: Download conman
