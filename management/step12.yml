@@ -11,8 +11,6 @@
          enabled: true
 
      - name: Modify xinetd.d/tftp
-       ansible.builtin.replace:
-         path: /etc/xinetd.d/tftp
-         regexp: 'server = (.*\n.*\n.*)'
-         replace: "server = /usr/sbin/in.tftpd \nserver_args = -s /tftpboot/ -v \ndisable = no"
-
+       template:
+         src: "./xinetd-tftp.j2"
+         dest: "/etc/xinetd.d/tftp"
