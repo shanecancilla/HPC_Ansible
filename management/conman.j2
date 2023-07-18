@@ -11,8 +11,6 @@ GLOBAL log="console.%N"
 GLOBAL logopts="sanitize,timestamp"
 
 {% for num in dictionary.keys() %}
-
-CONSOLE name="{{ cluster + num }}"      dev="ipmi:p"{{ num }}"" ipmiopts=""
-
+CONSOLE name="{{ cluster + num }}"      dev="ipmi:p{{ num }}" ipmiopts=""
 {% endfor %}
 
