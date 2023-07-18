@@ -10,9 +10,9 @@ GLOBAL seropts="115200,8n1"
 GLOBAL log="console.%N"
 GLOBAL logopts="sanitize,timestamp"
 
+{% for num in dictionary.keys() %}
 
-CONSOLE name="{{ cluster }}2"      dev="ipmi:p2" ipmiopts=""
-CONSOLE name="{{ cluster }}3"      dev="ipmi:p3" ipmiopts=""
-CONSOLE name="{{ cluster }}4"      dev="ipmi:p4" ipmiopts=""
-CONSOLE name="{{ cluster }}5"      dev="ipmi:p5" ipmiopts=""
-CONSOLE name="{{ cluster }}6"      dev="ipmi:p6" ipmiopts=""
+CONSOLE name="{{ cluster + num }}"      dev="ipmi:p"{{ num }}"" ipmiopts=""
+
+{% endfor %}
+
