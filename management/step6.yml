@@ -21,7 +21,7 @@
            - tar
            - gcc
            - curl-devel
-          - net-snmp-devel
+           - net-snmp-devel
            - rpm-build
            - freeipmi-devel
            - rpmdevtools

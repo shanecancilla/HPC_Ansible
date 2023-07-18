@@ -1,13 +1,11 @@
 ---
-- name: Setup network interfaces and restart NetworkManager
+- name: Setup network interfaces
   hosts: management
   tasks:
     - name: Configure eno1 file
       template:
         src: "./eno1-content.j2"
         dest: "/etc/sysconfig/network-scripts/ifcfg-eno1"
-    - name: Restart the network
-      command: systemctl restart NetworkManager
     - name: Bring up eno1
       command: ifup eno1
     - name: Verify eno1 being default route
@@ -18,12 +16,6 @@
       template:
         src: "./eno21-content.j2"
         dest: "/etc/sysconfig/network-scripts/ifcfg-eno2:1"
-    - name: Enable and Start httpd
-      command: systemctl enable --now httpd
-    - name: Check status of httpd
-      command: systemctl status httpd
-      register: out
-    - debug: var=out.stdout_lines
     - name: Configure eno2 file
       template:
         src: './eno2-content.j2'

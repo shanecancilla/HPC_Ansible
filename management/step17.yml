@@ -11,9 +11,9 @@
 
   - name: delete tcp_wrappers-devel line in file
     lineinfile:
-      path: conman-0.3.0/conman.spec
+      path: /root/conman-0.3.0/conman.spec
       state: absent
-      regexp: '^BuildRequires:  tcp_wrappers-devel$'
+      regexp: '^BuildRequires:\s+tcp_wrappers-devel$'
 
   - name: recreate tar file
     command: tar -cvf conman-0.3.0.tar.xz conman-0.3.0/
@@ -28,7 +28,7 @@
   - name: configure conman.conf
     template: 
       src: conman.j2
-      dest: /etc/
+      dest: /etc/conman.conf
       force: yes
 
   - name: start and enable conman
