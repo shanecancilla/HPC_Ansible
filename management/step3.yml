@@ -16,7 +16,7 @@
       become: yes
       blockinfile:
         path: /etc/resolv.conf
-        state: absent
+        state: present
         block: |
           domain llnl.gov
           nameserver 192.12.17.17
