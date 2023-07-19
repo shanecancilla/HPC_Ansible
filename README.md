@@ -26,11 +26,12 @@ Run Ansible on Management Node with Minimal OS:
 	[compute]  
 	eoxygen[2:8]  
 4. Congfigre /etc/hosts to allow Ansible to ping the nodes (refer to Network Details page on Confluence)  
-5. Set up ssh keys (for management node, will eventually need to do compute nodes later(?))  
+5. Set up ssh keys (for management node, will eventually need to do compute nodes later(?))
+        ssh-keygen -R oxygeni  
 	ssh-copy-id oxygeni   
-6. Go to management directory in HPC_Ansible  
+7. Go to management directory in HPC_Ansible  
 	cd /root/HPC_Ansible/management  
-7. Run Ansible playbook  
+8. Run Ansible playbook  
 	ansible-playbook mgmt.yml  
   
 If needed, disable and stop NetworkManager  
