@@ -11,8 +11,8 @@
 
     - name: copy syslinux directory content to tftpboot directory
       copy:
-        src: /usr/share/syslinux
-        dest: /tftpboot/
+        src: /usr/share/syslinux/
+        dest: /tmp/tftpboot/
         remote_src: yes
 
     - name: Make the /tftpboot/pxelinux.cfg directory

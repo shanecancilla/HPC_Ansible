@@ -13,10 +13,12 @@
         path: /etc/hosts
         block: |
           {{ ext_net }}
+          {{ lookup('template', './step1_write.j2') }}
 
-    - name: Run Template file
-      lineinfile:
-        dest: /etc/hosts
-        line: "{{ lookup('template', './step1_write.j2') }}"
-        insertafter: EOF
-      become: true
+#    - name: Run Template file
+#      blockinfile:
+#        path: /etc/hosts
+#        block: | 
+#          {{ lookup('template', './step1_write.j2') }}
+#        insertafter: EOF
+#      become: true
