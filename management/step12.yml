@@ -4,13 +4,13 @@
    remote_user: root
 
    tasks: 
+     - name: Modify xinetd.d/tftp
+       template:
+         src: "./xinetd-tftp.j2"
+         dest: "/etc/xinetd.d/tftp"
      - name: Start and enable xinetd
        ansible.builtin.systemd:
          name: xinetd
          state: started
          enabled: true
 
-     - name: Modify xinetd.d/tftp
-       template:
-         src: "./xinetd-tftp.j2"
-         dest: "/etc/xinetd.d/tftp"
