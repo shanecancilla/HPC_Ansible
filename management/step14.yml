@@ -78,6 +78,12 @@
 
         # Root password
         rootpw --plaintext InitPass23
+        
+        %post --log=/root/ks-postinstall.log
+        mkdir -m 700 /root/.ssh
+        curl http://192.168.95.1/id_rsa.pub -o /root/.ssh/authorized_keys
+        chmod 600 /root/.ssh/authorized_keys
+        %end
 
         %addon com_redhat_kdump --enable --reserve-mb='auto'
 
