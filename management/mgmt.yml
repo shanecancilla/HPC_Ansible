@@ -38,8 +38,8 @@
 - name: Step 11 - Setup dhcpd.conf
   import_playbook: step11.yml
 
-#- name: Step 12 - Enable and start xinetd
-#  import_playbook: step12.yml
+- name: Step 12 - Enable and start xinetd
+  import_playbook: step12.yml
 
 - name: Step 13 - Turn off firewall and disable
   import_playbook: step13.yml
